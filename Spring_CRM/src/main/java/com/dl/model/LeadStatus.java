@@ -1,0 +1,15 @@
+package com.dl.model;
+
+public enum LeadStatus {
+	NONE,
+	NOTCONTACTED,
+	ATTEMPTED,
+	WARMLEAD,
+	OPPORTUNITY,
+	ATTENDEDDEMO,
+	VISITED,
+	REGISTERED,
+	COLDLEAD
+	
+	
+}
