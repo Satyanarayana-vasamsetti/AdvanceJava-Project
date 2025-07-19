@@ -1,12 +1,11 @@
 package com.dl.model;
 
-public class TestStack {
-	enum TechStack{
+public enum TechStack {
 		CLOUDOPS,
 		SALESFORCE,
 		FULLSTACK,
 		DATASTACK,
 		SERVICENOW,
 		BUSINESSSTACK
-	}
+
 }

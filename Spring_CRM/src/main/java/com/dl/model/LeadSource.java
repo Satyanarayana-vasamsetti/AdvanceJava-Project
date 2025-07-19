@@ -1,0 +1,15 @@
+package com.dl.model;
+
+public enum LeadSource {
+	NONE,
+	WALKIN,
+	STUDENTREFERAL,
+	DEMO,
+	WEBSITE,
+	INBOUNDCALL,
+	GOOGLEADDWORDS,
+	FACEBOOKADS,
+	GOOGLEMYBUSINESS,
+	WHATSAPPDL
+	
+}
