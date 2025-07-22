@@ -15,8 +15,8 @@ public class LeadService {
 	@Autowired
 	LeadRepository leadrepo;
 
+	//constructor using field
 	public LeadService(LeadRepository leadrepo) {
-		super();
 		this.leadrepo = leadrepo;
 	}
 	
@@ -36,35 +36,17 @@ public class LeadService {
 	}
 	
 	//update
-	public LeadModel updateLeadById(LeadModel leadModel) {
-		return leadrepo.save(leadModel);
-	}
+	public LeadModel updateLeadById(LeadModel leadmodel) {
+		return leadrepo.save(leadmodel);
+	} 
 	
 	//countAllLeads()
 	public Long countAllLeadsStatus() {
 		return leadrepo.count();
 	}
 	
-	//delete lead by id
-	public void deleteLeadById(Integer id) {
-		leadrepo.deleteById(id);
+	public List<LeadModel> getCountAndOrderByStatus(LeadModel.LeadStatus leadStatus){
+		return leadrepo.findByLeadStatus(leadStatus);
 	}
 	
-//	//user defined methods
-//	public List<LeadModel> getCountAndOrderByStatus(LeadModel leadModel){
-//		return leadrepo.findByLeadStatus(leadModel);
-//	}
-//	
-//	//findLeadByUserName()
-//	public List<LeadModel> findLeadByUserName(String leadUsername){
-//		return leadrepo.findByLeadUserName(leadUsername); 
-//	}
-//	
-//	public List<LeadModel> findLeadsByUserNameStartingWith(String prefix){
-//		return leadrepo.findByLeadUserNameStartingWith(prefix);
-//	}
-//	
-//	public LeadModel findByEmail(String email) {
-//		return leadrepo.findByEmail(email);
-//	}
 }
