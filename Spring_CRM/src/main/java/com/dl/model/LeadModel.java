@@ -2,13 +2,13 @@ package com.dl.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +22,6 @@ public class LeadModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer customerid;
-
-	@Version
-	private Integer version;
 	private String customerName;
 	private String email;
 	private Long customerMobileNo;
@@ -32,22 +29,27 @@ public class LeadModel {
 	private String description;
 	private Date customerDate;
 	
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private BatchTiming batchTiming;
 	
-	
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Courses courses;
 	
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private LeadStatus leadStatus;
 	
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TechStack stack;
 	
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private LeadSource leadSource;
 	
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ClassMode classMode;
 	
