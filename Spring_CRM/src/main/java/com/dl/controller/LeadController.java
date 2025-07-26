@@ -1,84 +1,94 @@
 package com.dl.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.dl.dto.LeadDTO;
 import com.dl.model.LeadModel;
 import com.dl.service.LeadService;
 
+import jakarta.validation.Valid;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/leads")
 public class LeadController {
 
-	@Autowired
-	LeadService leadservice;
+    @Autowired
+    private LeadService leadService;
 
-	public LeadController(LeadService leadservice) {
-		super();
-		this.leadservice = leadservice;
-	}
-	//http://localhost:8080/api/leads/createLead
-	@PostMapping("/createLead")
-	public LeadModel createLead(@RequestBody LeadModel leadmodel) {
-		return leadservice.createLead(leadmodel);
-	}
-	
-	//http://localhost:8080/api/leads/getAllLeads
-	@GetMapping("/getAllLeads")
-	public List<LeadModel> getAllLeads(){
-		return leadservice.getAllLeads();
-	}
-	
-	//http://localhost:8080/api/leads/1
-	@GetMapping("/{id}")
-	public ResponseEntity<LeadModel> getLeadById(@PathVariable Integer id){
-		Optional<LeadModel> lead = leadservice.getLeadById(id);
-		
-		//if returns first element of stream
-		if(lead.isPresent()) {
-			return ResponseEntity.ok(lead.get());
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-	
-	//http://localhost:8080/api/leads/updateLead
-	@PutMapping("/updateLead")
-	public LeadModel updateLead(@RequestBody LeadModel leadModel) {
-		return leadservice.updateLeadById(leadModel);
-		
-	}
-	
-	//http://localhost:8080/api/leads/users/count
-	@GetMapping("/users/count")
-	public Long countAllLeadStatus() {
-		return leadservice.countAllLeadsStatus();
-	}
-	//http://localhost:8080/api/leads/NOTCONTACTED/leadStatus
-	@GetMapping("/{status}/leadStatus")
-	public ResponseEntity<Map<String, Object>> getCountAndOrderByStatus(@PathVariable("status") LeadModel.LeadStatus leadStatus){
-		List<LeadModel> orders = leadservice.getCountAndOrderByStatus(leadStatus);
-		int count = orders.size();
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		response.put("count", count);
-		response.put("orders", orders);	
-		
-		return ResponseEntity.ok(response);
-		
-	}
-	
+    @Autowired
+    private ModelMapper modelMapper;
+
+    // Constructor
+    public LeadController(LeadService leadService, ModelMapper modelMapper) {
+        this.leadService = leadService;
+        this.modelMapper = modelMapper;
+    }
+
+    // POST: Create Lead
+    @PostMapping("/createLead")
+    public ResponseEntity<LeadDTO> createLead(@Valid @RequestBody LeadDTO leadDTO) {
+        LeadModel model = modelMapper.map(leadDTO, LeadModel.class);
+        LeadModel saved = leadService.createLead(model);
+        LeadDTO responseDTO = modelMapper.map(saved, LeadDTO.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    // GET: Paginated & Sorted List of Leads
+    @GetMapping("/getAllLeads")
+    public ResponseEntity<Page<LeadDTO>> getAllLeads(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "customerid") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<LeadModel> leadPage = leadService.getAllLeads(pageable);
+
+        Page<LeadDTO> dtoPage = leadPage.map(lead -> modelMapper.map(lead, LeadDTO.class));
+        return ResponseEntity.ok(dtoPage);
+    }
+
+    // GET: Lead by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<LeadDTO> getLeadById(@PathVariable Integer id) {
+        Optional<LeadModel> optionalLead = leadService.getLeadById(id);
+        return optionalLead
+                .map(lead -> ResponseEntity.ok(modelMapper.map(lead, LeadDTO.class)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // PUT: Update Lead
+    @PutMapping("/updateLead")
+    public ResponseEntity<LeadDTO> updateLead(@Valid @RequestBody LeadDTO leadDTO) {
+        LeadModel leadModel = modelMapper.map(leadDTO, LeadModel.class);
+        LeadModel updated = leadService.updateLeadById(leadModel);
+        LeadDTO responseDTO = modelMapper.map(updated, LeadDTO.class);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    // GET: Total count of leads
+    @GetMapping("/users/count")
+    public Long countAllLeadStatus() {
+        return leadService.countAllLeadsStatus();
+    }
+
+    // GET: Leads filtered by status + count
+    @GetMapping("/{status}/leadStatus")
+    public ResponseEntity<Map<String, Object>> getCountAndOrderByStatus(@PathVariable("status") LeadModel.LeadStatus leadStatus) {
+        List<LeadModel> leads = leadService.getCountAndOrderByStatus(leadStatus);
+        List<LeadDTO> leadDTOs = leads.stream().map(lead -> modelMapper.map(lead, LeadDTO.class)).toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("count", leadDTOs.size());
+        response.put("orders", leadDTOs);
+
+        return ResponseEntity.ok(response);
+    }
 }
