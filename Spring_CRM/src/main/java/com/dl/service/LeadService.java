@@ -1,9 +1,12 @@
 package com.dl.service;
 
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dl.model.LeadModel;
@@ -26,8 +29,8 @@ public class LeadService {
 	}
 	
 	//get all leads
-	public List<LeadModel> getAllLeads(){
-		return leadrepo.findAll();
+	public Page<LeadModel> getAllLeads(Pageable pageable){
+		return leadrepo.findAll(pageable);
 	}
 	
 	//getLeadByID()
