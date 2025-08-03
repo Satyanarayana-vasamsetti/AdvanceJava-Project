@@ -8,10 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails  {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private AppUser user;
 	
 	public UserPrincipal(AppUser user) {
@@ -22,7 +18,7 @@ public class UserPrincipal implements UserDetails  {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
-		return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")) ;
+		return Collections.singleton(new SimpleGrantedAuthority("USER"));
 	}
 	@Override
 	public String getUsername() {
