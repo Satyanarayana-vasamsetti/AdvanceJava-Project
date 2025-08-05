@@ -12,9 +12,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.dl.security.service.MyUserDetailsService;
 
@@ -24,6 +26,10 @@ public class SecurityConfig {
 	
 	@Autowired
 	public MyUserDetailsService userDetailsService;
+	
+	@Autowired
+	private JwtFilter jwtFilter;
+	
 	
 	@Bean
 	public SecurityFilterChain sfc(HttpSecurity http) throws Exception {
@@ -36,6 +42,7 @@ public class SecurityConfig {
 				.httpBasic(Customizer.withDefaults()) 
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authProvider())
+				.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 	
@@ -44,6 +51,7 @@ public class SecurityConfig {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 	    provider.setUserDetailsService(userDetailsService);
 	    provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+	    provider.setUserDetailsService(userDetailsService);
 	    return provider;
 	}
 	
