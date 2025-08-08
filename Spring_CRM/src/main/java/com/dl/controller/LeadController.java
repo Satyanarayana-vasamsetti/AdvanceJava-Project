@@ -3,18 +3,17 @@ package com.dl.controller;
 import com.dl.dto.LeadDTO;
 import com.dl.model.LeadModel;
 import com.dl.service.LeadService;
-
 import jakarta.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
+
 @RestController
 @RequestMapping("/api/leads")
 public class LeadController {
@@ -25,14 +24,14 @@ public class LeadController {
     @Autowired
     private ModelMapper modelMapper;
 
-    // Constructor
     public LeadController(LeadService leadService, ModelMapper modelMapper) {
         this.leadService = leadService;
         this.modelMapper = modelMapper;
     }
 
-    // POST: Create Lead
     @PostMapping("/createLead")
+    @PreAuthorize("hasRole('ADMIN')")
+    //http://localhost:8080/api/leads/createLead
     public ResponseEntity<LeadDTO> createLead(@Valid @RequestBody LeadDTO leadDTO) {
         LeadModel model = modelMapper.map(leadDTO, LeadModel.class);
         LeadModel saved = leadService.createLead(model);
@@ -40,8 +39,9 @@ public class LeadController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // GET: Paginated & Sorted List of Leads
     @GetMapping("/getAllLeads")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    //http://localhost:8080/api/leads/getAllLeads
     public ResponseEntity<Page<LeadDTO>> getAllLeads(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -51,13 +51,13 @@ public class LeadController {
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<LeadModel> leadPage = leadService.getAllLeads(pageable);
-
         Page<LeadDTO> dtoPage = leadPage.map(lead -> modelMapper.map(lead, LeadDTO.class));
         return ResponseEntity.ok(dtoPage);
     }
 
-    // GET: Lead by ID
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    //http://localhost:8080/api/leads/id/5
     public ResponseEntity<LeadDTO> getLeadById(@PathVariable Integer id) {
         Optional<LeadModel> optionalLead = leadService.getLeadById(id);
         return optionalLead
@@ -65,8 +65,8 @@ public class LeadController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // PUT: Update Lead
     @PutMapping("/updateLead")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<LeadDTO> updateLead(@Valid @RequestBody LeadDTO leadDTO) {
         LeadModel leadModel = modelMapper.map(leadDTO, LeadModel.class);
         LeadModel updated = leadService.updateLeadById(leadModel);
@@ -74,14 +74,14 @@ public class LeadController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // GET: Total count of leads
     @GetMapping("/users/count")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public Long countAllLeadStatus() {
         return leadService.countAllLeadsStatus();
     }
 
-    // GET: Leads filtered by status + count
     @GetMapping("/{status}/leadStatus")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<Map<String, Object>> getCountAndOrderByStatus(@PathVariable("status") LeadModel.LeadStatus leadStatus) {
         List<LeadModel> leads = leadService.getCountAndOrderByStatus(leadStatus);
         List<LeadDTO> leadDTOs = leads.stream().map(lead -> modelMapper.map(lead, LeadDTO.class)).toList();
