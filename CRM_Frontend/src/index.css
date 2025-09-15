@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Professional Lead Management System Design */
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    
+    /* Professional brand colors */
+    --primary: 263 70% 50%;
+    --primary-glow: 263 85% 65%;
+    --secondary: 240 10% 15%;
+    --accent: 142 76% 36%;
+    
+    /* UI Colors */
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 5% 65%;
+    --border: 240 10% 18%;
+    --input: 240 10% 15%;
+    --ring: 263 70% 50%;
+    
+    /* Status colors */
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --error: 0 84% 60%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(263 85% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(263 70% 50%), hsl(217 91% 60%));
+    --gradient-card: linear-gradient(145deg, hsl(240 10% 8%), hsl(240 10% 12%));
+    
+    /* Effects */
+    --shadow-primary: 0 10px 30px -10px hsl(263 70% 50% / 0.3);
+    --shadow-card: 0 4px 20px hsl(240 10% 3% / 0.3);
+    --shadow-glow: 0 0 40px hsl(263 85% 65% / 0.2);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
+
+    /* Card system */
+    --card: 240 10% 8%;
+    --card-foreground: 0 0% 98%;
+    
+    /* Popover */
+    --popover: 240 10% 12%;
+    --popover-foreground: 0 0% 98%;
+    
+    /* Primary redesign */
+    --primary-foreground: 0 0% 98%;
+    
+    /* Secondary */
+    --secondary-foreground: 0 0% 98%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

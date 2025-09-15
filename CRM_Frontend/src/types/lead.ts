@@ -1,0 +1,115 @@
+export interface Lead {
+  customerid?: number;
+  customerName: string;
+  email: string;
+  customerMobileNo: number;
+  customerFeeCoated: number;
+  description?: string;
+  customerDate?: string;
+  batchTiming: BatchTiming;
+  courses: Courses;
+  leadStatus: LeadStatus;
+  stack: TechStack;
+  leadSource: LeadSource;
+  classMode: ClassMode;
+}
+
+export enum BatchTiming {
+  _7AM_8AM = '_7AM_8AM',
+  _8AM_9AM = '_8AM_9AM',
+  _9AM_10AM = '_9AM_10AM',
+  _10AM_11AM = '_10AM_11AM',
+  _11AM_12PM = '_11AM_12PM',
+  _12PM_1PM = '_12PM_1PM',
+  _1PM_2PM = '_1PM_2PM',
+  _2PM_3PM = '_2PM_3PM',
+  _3PM_4PM = '_3PM_4PM',
+  _4PM_5PM = '_4PM_5PM',
+  _5PM_6PM = '_5PM_6PM',
+  _6PM_7PM = '_6PM_7PM',
+  _7PM_8PM = '_7PM_8PM',
+  _8PM_9PM = '_8PM_9PM'
+}
+
+export enum ClassMode {
+  HYD_CLASSROOM = 'HYD_CLASSROOM',
+  BLR_CLASSROOM = 'BLR_CLASSROOM',
+  INDIA_ONLINE = 'INDIA_ONLINE',
+  INTERNATIONAL_ONLINE = 'INTERNATIONAL_ONLINE'
+}
+
+export enum Courses {
+  ANGULAAR = 'ANGULAAR',
+  AWSWITHDEVOPS = 'AWSWITHDEVOPS',
+  AZURE = 'AZURE',
+  AZUREDEVOPS = 'AZUREDEVOPS',
+  BUSINESSANLAYST = 'BUSINESSANLAYST',
+  CLOUDOPSMASTERS = 'CLOUDOPSMASTERS',
+  DEVOPSI = 'DEVOPSI',
+  FRONTENDANGULAR = 'FRONTENDANGULAR',
+  FRONTENDREACT = 'FRONTENDREACT',
+  FULLSTACK_JAVA = 'FULLSTACK_JAVA',
+  FULLSTACK_MEAN = 'FULLSTACK_MEAN',
+  FULLSTACK_MERN = 'FULLSTACK_MERN',
+  FULLSTACK_PYTHON = 'FULLSTACK_PYTHON',
+  FULLSTACK_REACT_JAVA = 'FULLSTACK_REACT_JAVA',
+  JAVA = 'JAVA',
+  NEEDCOUNSELLING = 'NEEDCOUNSELLING',
+  OTHERS = 'OTHERS',
+  POWERBI = 'POWERBI',
+  PYTHON = 'PYTHON',
+  REACT = 'REACT',
+  SALESFORCEADMIN = 'SALESFORCEADMIN',
+  SALESFORCEDEVELOPER = 'SALESFORCEDEVELOPER',
+  SERVICENOW = 'SERVICENOW',
+  AZUREDATAENGINEER = 'AZUREDATAENGINEER',
+  TABLEAU = 'TABLEAU',
+  TESTING = 'TESTING'
+}
+
+export enum LeadSource {
+  NONE = 'NONE',
+  WALKIN = 'WALKIN',
+  STUDENTREFERAL = 'STUDENTREFERAL',
+  DEMO = 'DEMO',
+  WEBSITE = 'WEBSITE',
+  INBOUNDCALL = 'INBOUNDCALL',
+  GOOGLEADDWORDS = 'GOOGLEADDWORDS',
+  FACEBOOKADS = 'FACEBOOKADS',
+  GOOGLEMYBUSINESS = 'GOOGLEMYBUSINESS',
+  WHATSAPPDL = 'WHATSAPPDL'
+}
+
+export enum LeadStatus {
+  NONE = 'NONE',
+  NOTCONTACTED = 'NOTCONTACTED',
+  ATTEMPTED = 'ATTEMPTED',
+  WARMLEAD = 'WARMLEAD',
+  OPPORTUNITY = 'OPPORTUNITY',
+  ATTENDEDDEMO = 'ATTENDEDDEMO',
+  VISITED = 'VISITED',
+  REGISTERED = 'REGISTERED',
+  COLDLEAD = 'COLDLEAD'
+}
+
+export enum TechStack {
+  CLOUDOPS = 'CLOUDOPS',
+  SALESFORCE = 'SALESFORCE',
+  FULLSTACK = 'FULLSTACK',
+  DATASTACK = 'DATASTACK',
+  SERVICENOW = 'SERVICENOW',
+  BUSINESSSTACK = 'BUSINESSSTACK'
+}
+
+export interface LeadPageResponse {
+  content: Lead[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
+
+export interface LeadStats {
+  count: number;
+  orders: Lead[];
+}
