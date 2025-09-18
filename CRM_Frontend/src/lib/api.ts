@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AuthRequest, AuthResponse, RegisterRequest } from '@/types/auth';
 import { Lead, LeadPageResponse, LeadStats, LeadStatus } from '@/types/lead';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL}`;
+const API_BASE_URL = import.meta.env.VITE_API_URL as string;
 
 // Create axios instance
 const api = axios.create({
