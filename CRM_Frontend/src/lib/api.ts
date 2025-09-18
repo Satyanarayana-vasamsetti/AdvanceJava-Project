@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AuthRequest, AuthResponse, RegisterRequest } from '@/types/auth';
 import { Lead, LeadPageResponse, LeadStats, LeadStatus } from '@/types/lead';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = `${process.env.REACT_APP_API_URL}`;
 
 // Create axios instance
 const api = axios.create({
