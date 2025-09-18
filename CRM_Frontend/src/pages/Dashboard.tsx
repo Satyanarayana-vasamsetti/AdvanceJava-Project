@@ -44,14 +44,8 @@ export default function Dashboard() {
   const loadDashboardData = async () => {
     try {
       setIsLoading(true);
-      
-      // Load total leads count
       const totalCount = await leadsAPI.countAllLeads();
-      
-      // Load recent leads
       const recentLeadsResponse = await leadsAPI.getAllLeads(0, 5, 'customerid', 'desc');
-      
-      // Load leads by status
       const [registeredData, warmData, opportunityData] = await Promise.all([
         leadsAPI.getLeadsByStatus(LeadStatus.REGISTERED),
         leadsAPI.getLeadsByStatus(LeadStatus.WARMLEAD),
@@ -97,7 +91,7 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 px-4 md:px-8 lg:px-12">
         <div className="animate-pulse">
           <div className="h-8 bg-muted rounded w-64 mb-2"></div>
           <div className="h-4 bg-muted rounded w-48"></div>
@@ -114,19 +108,19 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 md:px-8 lg:px-12 py-6">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+          <p className="text-sm md:text-base text-muted-foreground">
             Welcome back, {user?.username}! Here's your lead overview.
           </p>
         </div>
         
         {user?.role === 'ADMIN' && (
           <Link to="/leads/create">
-            <Button className="bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90">
+            <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90">
               <Plus className="h-4 w-4 mr-2" />
               Create New Lead
             </Button>
@@ -135,17 +129,15 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Leads</CardTitle>
             <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.totalLeads}</div>
-            <p className="text-xs text-muted-foreground">
-              All leads in system
-            </p>
+            <div className="text-xl md:text-2xl font-bold text-primary">{stats.totalLeads}</div>
+            <p className="text-xs text-muted-foreground">All leads in system</p>
           </CardContent>
         </Card>
 
@@ -155,10 +147,8 @@ export default function Dashboard() {
             <TrendingUp className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">{stats.registeredLeads}</div>
-            <p className="text-xs text-muted-foreground">
-              Successfully registered
-            </p>
+            <div className="text-xl md:text-2xl font-bold text-success">{stats.registeredLeads}</div>
+            <p className="text-xs text-muted-foreground">Successfully registered</p>
           </CardContent>
         </Card>
 
@@ -168,10 +158,8 @@ export default function Dashboard() {
             <Target className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">{stats.warmLeads}</div>
-            <p className="text-xs text-muted-foreground">
-              Potential conversions
-            </p>
+            <div className="text-xl md:text-2xl font-bold text-warning">{stats.warmLeads}</div>
+            <p className="text-xs text-muted-foreground">Potential conversions</p>
           </CardContent>
         </Card>
 
@@ -181,25 +169,24 @@ export default function Dashboard() {
             <DollarSign className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">{stats.opportunityLeads}</div>
-            <p className="text-xs text-muted-foreground">
-              High-value prospects
-            </p>
+            <div className="text-xl md:text-2xl font-bold text-blue-500">{stats.opportunityLeads}</div>
+            <p className="text-xs text-muted-foreground">High-value prospects</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Leads */}
+      {/* Recent Leads & Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Leads */}
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <CardTitle>Recent Leads</CardTitle>
                 <CardDescription>Latest leads added to the system</CardDescription>
               </div>
               <Link to="/leads">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="w-full sm:w-auto">
                   <Eye className="h-4 w-4 mr-2" />
                   View All
                 </Button>
@@ -214,7 +201,7 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-4">
                 {stats.recentLeads.map((lead) => (
-                  <div key={lead.customerid} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div key={lead.customerid} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-muted/50 rounded-lg gap-2">
                     <div className="flex-1">
                       <div className="font-medium">{lead.customerName}</div>
                       <div className="text-sm text-muted-foreground">{lead.email}</div>

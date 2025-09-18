@@ -56,19 +56,19 @@ export default function LeadsList() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Leads Management</h1>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl font-bold">Leads Management</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Manage and track all your leads in one place
           </p>
         </div>
         
         {user?.role === 'ADMIN' && (
-          <Link to="/leads/create">
-            <Button className="bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90">
+          <Link to="/leads/create" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90">
               <Plus className="h-4 w-4 mr-2" />
               Create New Lead
             </Button>
@@ -76,25 +76,31 @@ export default function LeadsList() {
         )}
       </div>
 
-      {/* Leads Table */}
-      <LeadTable
-        leads={leads}
-        totalElements={totalElements}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        onViewLead={handleViewLead}
-        onEditLead={user?.role === 'ADMIN' ? handleEditLead : undefined}
-        isLoading={isLoading}
-      />
-
-      {/* Lead Details Modal */}
-      {selectedLead && (
-        <LeadDetails
-          lead={selectedLead}
-          onClose={() => setSelectedLead(null)}
-          onEdit={user?.role === 'ADMIN' ? handleEditLead : undefined}
+      {/* Leads Table (responsive scroll) */}
+      <div className="overflow-x-auto rounded-lg border">
+        <LeadTable
+          leads={leads}
+          totalElements={totalElements}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          onViewLead={handleViewLead}
+          onEditLead={user?.role === 'ADMIN' ? handleEditLead : undefined}
+          isLoading={isLoading}
         />
+      </div>
+
+      {/* Lead Details Modal (full screen on mobile) */}
+      {selectedLead && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/50">
+          <div className="w-full sm:w-[600px] bg-background rounded-xl shadow-lg overflow-hidden">
+            <LeadDetails
+              lead={selectedLead}
+              onClose={() => setSelectedLead(null)}
+              onEdit={user?.role === 'ADMIN' ? handleEditLead : undefined}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

@@ -12,7 +12,7 @@ export default function EditLead() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const { toast } = useToast();
-  
+
   const [lead, setLead] = useState<Lead | null>(location.state?.lead || null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingLead, setIsLoadingLead] = useState(!lead);
@@ -30,9 +30,9 @@ export default function EditLead() {
       setLead(leadData);
     } catch (error: any) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load lead details"
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to load lead details',
       });
       navigate('/leads');
     } finally {
@@ -46,15 +46,15 @@ export default function EditLead() {
       const updatedData = { ...data, customerid: lead?.customerid };
       await leadsAPI.updateLead(updatedData);
       toast({
-        title: "Success",
-        description: "Lead updated successfully"
+        title: 'Success',
+        description: 'Lead updated successfully',
       });
       navigate('/leads');
     } catch (error: any) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.response?.data?.message || "Failed to update lead"
+        variant: 'destructive',
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to update lead',
       });
     } finally {
       setIsLoading(false);
@@ -63,7 +63,7 @@ export default function EditLead() {
 
   if (isLoadingLead) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-4 sm:p-6 lg:p-8">
         <div className="animate-pulse">
           <div className="h-8 bg-muted rounded w-64 mb-2"></div>
           <div className="h-4 bg-muted rounded w-48"></div>
@@ -77,7 +77,7 @@ export default function EditLead() {
 
   if (!lead) {
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-8 px-4 sm:px-6 lg:px-8">
         <p className="text-muted-foreground">Lead not found</p>
         <Button onClick={() => navigate('/leads')} className="mt-4">
           Back to Leads
@@ -87,9 +87,9 @@ export default function EditLead() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <Button
           variant="ghost"
           onClick={() => navigate('/leads')}
@@ -98,20 +98,22 @@ export default function EditLead() {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Edit Lead</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold">Edit Lead</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Update lead information for {lead.customerName}
           </p>
         </div>
       </div>
 
       {/* Lead Form */}
-      <LeadForm
-        onSubmit={handleSubmit}
-        initialData={lead}
-        isLoading={isLoading}
-        mode="edit"
-      />
+      <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
+        <LeadForm
+          onSubmit={handleSubmit}
+          initialData={lead}
+          isLoading={isLoading}
+          mode="edit"
+        />
+      </div>
     </div>
   );
 }

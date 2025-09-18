@@ -18,14 +18,14 @@ export default function CreateLead() {
       await leadsAPI.createLead(data);
       toast({
         title: "Success",
-        description: "Lead created successfully"
+        description: "Lead created successfully",
       });
       navigate('/leads');
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.response?.data?.message || "Failed to create lead"
+        description: error.response?.data?.message || "Failed to create lead",
       });
     } finally {
       setIsLoading(false);
@@ -33,30 +33,30 @@ export default function CreateLead() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 md:px-8 lg:px-12 py-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/leads')}
-          className="p-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold">Create New Lead</h1>
-          <p className="text-muted-foreground">
-            Add a new lead to the system
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/leads')}
+            className="p-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Create New Lead</h1>
+            <p className="text-sm md:text-base text-muted-foreground">
+              Add a new lead to the system
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Lead Form */}
-      <LeadForm
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-        mode="create"
-      />
+      <div className="w-full max-w-2xl mx-auto">
+        <LeadForm onSubmit={handleSubmit} isLoading={isLoading} mode="create" />
+      </div>
     </div>
   );
 }
