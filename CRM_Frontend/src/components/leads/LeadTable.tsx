@@ -10,30 +10,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Lead, LeadStatus } from '@/types/lead';
 import { useAuth } from '@/contexts/AuthContext';
-import {
-  Eye,
-  Edit,
-  Search,
-  Filter,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Eye, Edit, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface LeadTableProps {
   leads: Lead[];
@@ -54,7 +35,7 @@ export const LeadTable = ({
   onPageChange,
   onViewLead,
   onEditLead,
-  isLoading,
+  isLoading
 }: LeadTableProps) => {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
@@ -77,19 +58,14 @@ export const LeadTable = ({
 
   const formatEnumLabel = (value: any) => {
     if (typeof value !== 'string') return '-';
-    return value
-      .replace(/_/g, ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (l) => l.toUpperCase());
-  };
+    return value.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+};
 
-  const filteredLeads = leads.filter((lead) => {
-    const matchesSearch =
-      lead.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.customerMobileNo?.includes(searchTerm);
-    const matchesStatus =
-      statusFilter === 'all' || lead.leadStatus === statusFilter;
+
+  const filteredLeads = leads.filter(lead => {
+    const matchesSearch = lead.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         lead.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || lead.leadStatus === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -107,20 +83,15 @@ export const LeadTable = ({
     <Card>
       <CardHeader>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          {/* Title + Count */}
           <div>
-            <CardTitle className="text-lg sm:text-xl md:text-2xl">
-              Leads Management
-            </CardTitle>
-            <CardDescription className="text-sm sm:text-base">
+            <CardTitle className="text-xl">Leads Management</CardTitle>
+            <CardDescription>
               Total {totalElements} leads found
             </CardDescription>
           </div>
-
-          {/* Search + Filter */}
-          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-            {/* Search */}
-            <div className="relative flex-1 sm:flex-none">
+          
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 placeholder="Search leads..."
@@ -129,8 +100,7 @@ export const LeadTable = ({
                 className="pl-10 w-full sm:w-64"
               />
             </div>
-
-            {/* Status Filter */}
+            
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-48">
                 <Filter className="h-4 w-4 mr-2" />
@@ -148,11 +118,10 @@ export const LeadTable = ({
           </div>
         </div>
       </CardHeader>
-
+      
       <CardContent>
-        {/* Responsive Table */}
-        <div className="overflow-x-auto -mx-2 sm:mx-0">
-          <Table className="min-w-[700px]">
+        <div className="overflow-x-auto">
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Customer</TableHead>
@@ -167,77 +136,48 @@ export const LeadTable = ({
             <TableBody>
               {filteredLeads.length === 0 ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={7}
-                    className="text-center py-8 text-muted-foreground text-sm sm:text-base"
-                  >
+                  <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                     No leads found matching your criteria
                   </TableCell>
                 </TableRow>
               ) : (
                 filteredLeads.map((lead) => (
-                  <TableRow
-                    key={lead.customerid}
-                    className="hover:bg-muted/50 transition-colors"
-                  >
-                    {/* Customer */}
-                    <TableCell className="whitespace-nowrap">
+                  <TableRow key={lead.customerid} className="hover:bg-muted/50">
+                    <TableCell>
                       <div>
-                        <div className="font-medium truncate max-w-[150px]">
-                          {lead.customerName}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="font-medium">{lead.customerName}</div>
+                        <div className="text-sm text-muted-foreground">
                           ID: {lead.customerid}
                         </div>
                       </div>
                     </TableCell>
-
-                    {/* Contact */}
-                    <TableCell className="whitespace-nowrap">
+                    <TableCell>
                       <div>
-                        <div className="text-sm truncate max-w-[160px]">
-                          {lead.email}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-sm">{lead.email}</div>
+                        <div className="text-sm text-muted-foreground">
                           {lead.customerMobileNo}
                         </div>
                       </div>
                     </TableCell>
-
-                    {/* Course */}
                     <TableCell>
                       <div>
-                        <div className="font-medium truncate max-w-[120px]">
-                          {formatEnumLabel(lead.courses)}
-                        </div>
-                        <div className="text-xs text-muted-foreground truncate max-w-[120px]">
+                        <div className="font-medium">{formatEnumLabel(lead.courses)}</div>
+                        <div className="text-sm text-muted-foreground">
                           {formatEnumLabel(lead.stack)}
                         </div>
                       </div>
                     </TableCell>
-
-                    {/* Status */}
                     <TableCell>
                       <Badge variant={getStatusBadgeVariant(lead.leadStatus)}>
                         {formatEnumLabel(lead.leadStatus)}
                       </Badge>
                     </TableCell>
-
-                    {/* Fee */}
                     <TableCell>
-                      <span className="font-medium">
-                        ₹{lead.customerFeeCoated?.toLocaleString()}
-                      </span>
+                      <span className="font-medium">₹{lead.customerFeeCoated?.toLocaleString()}</span>
                     </TableCell>
-
-                    {/* Source */}
-                    <TableCell className="whitespace-nowrap">
-                      <span className="text-sm">
-                        {formatEnumLabel(lead.leadSource)}
-                      </span>
+                    <TableCell>
+                      <span className="text-sm">{formatEnumLabel(lead.leadSource)}</span>
                     </TableCell>
-
-                    {/* Actions */}
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
@@ -269,11 +209,11 @@ export const LeadTable = ({
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex flex-col sm:flex-row items-center justify-between mt-6 gap-3">
-            <div className="text-xs sm:text-sm text-muted-foreground">
+          <div className="flex items-center justify-between mt-6">
+            <div className="text-sm text-muted-foreground">
               Page {currentPage + 1} of {totalPages}
             </div>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2">
               <Button
                 variant="outline"
                 size="sm"

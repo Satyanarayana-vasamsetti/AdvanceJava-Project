@@ -60,7 +60,7 @@ export default function LeadsList() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="text-center sm:text-left">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
             Leads Management
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
@@ -70,7 +70,7 @@ export default function LeadsList() {
 
         {user?.role === 'ADMIN' && (
           <Link to="/leads/create" className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-sm md:text-base">
+            <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-sm sm:text-base">
               <Plus className="h-4 w-4 mr-2" />
               Create New Lead
             </Button>
@@ -78,9 +78,9 @@ export default function LeadsList() {
         )}
       </div>
 
-      {/* Leads Table (scrollable on small devices) */}
+      {/* Leads Table (scrollable on mobile) */}
       <div className="overflow-x-auto rounded-lg border">
-        <div className="min-w-[600px]">
+        <div className="min-w-[300px] sm:min-w-[600px]">
           <LeadTable
             leads={leads}
             totalElements={totalElements}
@@ -97,7 +97,7 @@ export default function LeadsList() {
       {/* Lead Details Modal */}
       {selectedLead && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/50">
-          <div className="w-full max-w-full sm:max-w-lg h-[90vh] sm:h-auto bg-background rounded-xl shadow-lg overflow-y-auto">
+          <div className="w-full max-w-full sm:max-w-lg h-[90vh] sm:h-auto bg-background rounded-xl shadow-lg overflow-y-auto p-4 sm:p-6">
             <LeadDetails
               lead={selectedLead}
               onClose={() => setSelectedLead(null)}
