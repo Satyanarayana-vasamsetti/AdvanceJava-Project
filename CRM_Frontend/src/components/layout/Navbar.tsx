@@ -33,7 +33,7 @@ export const Navbar = ({ onMenuClick }: NavbarProps) => {
           <Menu className="h-5 w-5" />
         </Button>
         <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-          Lead Management System
+          CRM
         </h1>
       </div>
       
