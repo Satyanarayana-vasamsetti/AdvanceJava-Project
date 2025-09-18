@@ -202,14 +202,7 @@ export default function Analytics() {
                     cy="50%"
                     outerRadius="80%"
                     fill="#8884d8"
-                    // remove default labels
-                    labelLine={false}
-                    label={({ name, percent }) => {
-                      // Show shorter text + percentage inside slices
-                      return window.innerWidth < 640
-                        ? `${Math.round(percent * 100)}%`
-                        : `${name} (${Math.round(percent * 100)}%)`;
-                    }}
+                    label
                   >
                     {pieChartData.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -218,7 +211,6 @@ export default function Analytics() {
                   <RechartsTooltip />
                   <RechartsLegend verticalAlign="bottom" height={36} />
                 </PieChart>
-
               </ResponsiveContainer>
             ) : (
               <div className="text-center py-8 text-muted-foreground">No analytics data available</div>
