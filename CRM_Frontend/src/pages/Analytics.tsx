@@ -183,6 +183,7 @@ export default function Analytics() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Donut Chart */}
         <Card>
           <CardHeader>
             <CardTitle className="text-sm sm:text-base">Lead Status Distribution</CardTitle>
@@ -201,9 +202,11 @@ export default function Analytics() {
                       nameKey="name"
                       cx="50%"
                       cy="50%"
+                      innerRadius="50%"   // makes it a donut
                       outerRadius="80%"
+                      paddingAngle={4}
                       label={({ name, percent }) =>
-                        `${name} (${(percent * 100).toFixed(0)}%)`
+                        `${name} ${(percent * 100).toFixed(0)}%`
                       }
                     >
                       {pieChartData.map((_, index) => (
@@ -223,6 +226,7 @@ export default function Analytics() {
           </CardContent>
         </Card>
 
+        {/* Bar Chart */}
         <Card>
           <CardHeader>
             <CardTitle className="text-sm sm:text-base">Key Metrics Visualization</CardTitle>
