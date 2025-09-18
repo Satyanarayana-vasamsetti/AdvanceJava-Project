@@ -209,10 +209,12 @@ export default function Analytics() {
                         `${name} ${(percent * 100).toFixed(0)}%`
                       }
                     >
-                      
+                      {pieChartData.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
                     </Pie>
                     <RechartsTooltip formatter={(value) => [`${value}`, 'Leads']} />
-                    <RechartsLegend verticalAlign="bottom" height={36} />
+                    <RechartsLegend verticalAlign="bottom" height={20} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
