@@ -59,8 +59,7 @@ export const LeadTable = ({
   const formatEnumLabel = (value: any) => {
     if (typeof value !== 'string') return '-';
     return value.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
-};
-
+  };
 
   const filteredLeads = leads.filter(lead => {
     const matchesSearch = lead.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,14 +89,15 @@ export const LeadTable = ({
             </CardDescription>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative">
+          {/* Search + Filter */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 placeholder="Search leads..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full sm:w-64"
+                className="pl-10 w-full"
               />
             </div>
             
@@ -120,7 +120,8 @@ export const LeadTable = ({
       </CardHeader>
       
       <CardContent>
-        <div className="overflow-x-auto">
+        {/* Table for desktop */}
+        <div className="overflow-x-auto hidden md:block">
           <Table>
             <TableHeader>
               <TableRow>
@@ -144,57 +145,31 @@ export const LeadTable = ({
                 filteredLeads.map((lead) => (
                   <TableRow key={lead.customerid} className="hover:bg-muted/50">
                     <TableCell>
-                      <div>
-                        <div className="font-medium">{lead.customerName}</div>
-                        <div className="text-sm text-muted-foreground">
-                          ID: {lead.customerid}
-                        </div>
-                      </div>
+                      <div className="font-medium">{lead.customerName}</div>
+                      <div className="text-sm text-muted-foreground">ID: {lead.customerid}</div>
                     </TableCell>
                     <TableCell>
-                      <div>
-                        <div className="text-sm">{lead.email}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {lead.customerMobileNo}
-                        </div>
-                      </div>
+                      <div>{lead.email}</div>
+                      <div className="text-sm text-muted-foreground">{lead.customerMobileNo}</div>
                     </TableCell>
                     <TableCell>
-                      <div>
-                        <div className="font-medium">{formatEnumLabel(lead.courses)}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {formatEnumLabel(lead.stack)}
-                        </div>
-                      </div>
+                      <div className="font-medium">{formatEnumLabel(lead.courses)}</div>
+                      <div className="text-sm text-muted-foreground">{formatEnumLabel(lead.stack)}</div>
                     </TableCell>
                     <TableCell>
                       <Badge variant={getStatusBadgeVariant(lead.leadStatus)}>
                         {formatEnumLabel(lead.leadStatus)}
                       </Badge>
                     </TableCell>
-                    <TableCell>
-                      <span className="font-medium">₹{lead.customerFeeCoated?.toLocaleString()}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{formatEnumLabel(lead.leadSource)}</span>
-                    </TableCell>
+                    <TableCell>₹{lead.customerFeeCoated?.toLocaleString()}</TableCell>
+                    <TableCell>{formatEnumLabel(lead.leadSource)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => onViewLead(lead)}
-                          title="View details"
-                        >
+                        <Button variant="ghost" size="icon" onClick={() => onViewLead(lead)}>
                           <Eye className="h-4 w-4" />
                         </Button>
                         {user?.role === 'ADMIN' && onEditLead && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => onEditLead(lead)}
-                            title="Edit lead"
-                          >
+                          <Button variant="ghost" size="icon" onClick={() => onEditLead(lead)}>
                             <Edit className="h-4 w-4" />
                           </Button>
                         )}
@@ -207,9 +182,48 @@ export const LeadTable = ({
           </Table>
         </div>
 
+        {/* Mobile card layout */}
+        <div className="md:hidden space-y-4">
+          {filteredLeads.length === 0 ? (
+            <Card className="p-4 text-center text-muted-foreground">No leads found</Card>
+          ) : (
+            filteredLeads.map((lead) => (
+              <Card key={lead.customerid} className="p-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="font-semibold">{lead.customerName}</h3>
+                    <p className="text-xs text-muted-foreground">ID: {lead.customerid}</p>
+                  </div>
+                  <Badge variant={getStatusBadgeVariant(lead.leadStatus)}>
+                    {formatEnumLabel(lead.leadStatus)}
+                  </Badge>
+                </div>
+                <div className="mt-2 text-sm space-y-1">
+                  <p><span className="font-medium">Email:</span> {lead.email}</p>
+                  <p><span className="font-medium">Mobile:</span> {lead.customerMobileNo}</p>
+                  <p><span className="font-medium">Course:</span> {formatEnumLabel(lead.courses)}</p>
+                  <p><span className="font-medium">Stack:</span> {formatEnumLabel(lead.stack)}</p>
+                  <p><span className="font-medium">Fee:</span> ₹{lead.customerFeeCoated?.toLocaleString()}</p>
+                  <p><span className="font-medium">Source:</span> {formatEnumLabel(lead.leadSource)}</p>
+                </div>
+                <div className="flex justify-end gap-2 mt-3">
+                  <Button size="sm" variant="outline" onClick={() => onViewLead(lead)}>
+                    <Eye className="h-4 w-4 mr-1" /> View
+                  </Button>
+                  {user?.role === 'ADMIN' && onEditLead && (
+                    <Button size="sm" variant="outline" onClick={() => onEditLead(lead)}>
+                      <Edit className="h-4 w-4 mr-1" /> Edit
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            ))
+          )}
+        </div>
+
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between mt-6 gap-3">
             <div className="text-sm text-muted-foreground">
               Page {currentPage + 1} of {totalPages}
             </div>
