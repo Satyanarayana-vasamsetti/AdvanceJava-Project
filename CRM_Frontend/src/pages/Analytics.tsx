@@ -5,17 +5,15 @@ import { useToast } from '@/hooks/use-toast';
 import { leadsAPI } from '@/lib/api';
 import { LeadStatus } from '@/types/lead';
 import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip as RechartsTooltip,
-  Legend as RechartsLegend,
   ResponsiveContainer,
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
+  Tooltip as RechartsTooltip,
+  RadialBarChart,
+  RadialBar,
 } from 'recharts';
 
 interface AnalyticsData {
@@ -90,9 +88,10 @@ export default function Analytics() {
     );
   }
 
-  const pieChartData = Object.entries(analytics.statusBreakdown).map(([status, count]) => ({
+  const radialData = Object.entries(analytics.statusBreakdown).map(([status, count], i) => ({
     name: formatEnumLabel(status),
     value: count,
+    fill: COLORS[i % COLORS.length],
   }));
 
   const barChartData = [
@@ -183,7 +182,7 @@ export default function Analytics() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-        {/* Donut Chart */}
+        {/* Radial Bar Chart */}
         <Card>
           <CardHeader>
             <CardTitle className="text-sm sm:text-base">Lead Status Distribution</CardTitle>
@@ -193,29 +192,25 @@ export default function Analytics() {
           </CardHeader>
           <CardContent>
             {analytics.totalLeads > 0 ? (
-              <div className="h-[250px] sm:h-[300px] lg:h-[350px]">
+              <div className="h-[250px] sm:h-[300px] lg:h-[350px] flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieChartData}
+                  <RadialBarChart
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="20%"
+                    outerRadius="100%"
+                    barSize={20}
+                    data={radialData}
+                  >
+                    <RadialBar
+                      minAngle={10}
+                      background
+                      clockWise
                       dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius="50%"   // makes it a donut
-                      outerRadius="80%"
-                      paddingAngle={4}
-                      label={({ name, percent }) =>
-                        `${name} ${(percent * 100).toFixed(0)}%`
-                      }
-                    >
-                      {pieChartData.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
+                      label={{ position: 'insideStart', fill: '#fff', fontSize: 12 }}
+                    />
                     <RechartsTooltip formatter={(value) => [`${value}`, 'Leads']} />
-                    <RechartsLegend verticalAlign="bottom" height={20} />
-                  </PieChart>
+                  </RadialBarChart>
                 </ResponsiveContainer>
               </div>
             ) : (
