@@ -192,28 +192,33 @@ export default function Analytics() {
           </CardHeader>
           <CardContent>
             {analytics.totalLeads > 0 ? (
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={pieChartData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius="80%"
-                    fill="#8884d8"
-                    label
-                  >
-                    {pieChartData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <RechartsTooltip />
-                  <RechartsLegend verticalAlign="bottom" height={36} />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="h-[250px] sm:h-[300px] lg:h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieChartData}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius="80%"
+                      label={({ name, percent }) =>
+                        `${name} (${(percent * 100).toFixed(0)}%)`
+                      }
+                    >
+                      {pieChartData.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip formatter={(value) => [`${value}`, 'Leads']} />
+                    <RechartsLegend verticalAlign="bottom" height={36} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">No analytics data available</div>
+              <div className="text-center py-8 text-muted-foreground">
+                No analytics data available
+              </div>
             )}
           </CardContent>
         </Card>
@@ -223,15 +228,17 @@ export default function Analytics() {
             <CardTitle className="text-sm sm:text-base">Key Metrics Visualization</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <RechartsBarChart data={barChartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis allowDecimals={false} />
-                <RechartsTooltip />
-                <Bar dataKey="value" fill="#4ade80" />
-              </RechartsBarChart>
-            </ResponsiveContainer>
+            <div className="h-[250px] sm:h-[300px] lg:h-[350px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsBarChart data={barChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis allowDecimals={false} />
+                  <RechartsTooltip />
+                  <Bar dataKey="value" fill="#4ade80" radius={[6, 6, 0, 0]} />
+                </RechartsBarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
       </div>
