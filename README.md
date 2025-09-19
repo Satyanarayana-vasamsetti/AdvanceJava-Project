@@ -4,12 +4,14 @@ A production-ready **Lead Management System** (CRM-style project) built using **
 The system provides a complete solution to manage leads with a modern UI, analytics dashboard, and secure REST APIs.
 
 🚀 Tech Stack
+
 Frontend:React + Vite, TailwindCSS, Recharts, Axios  
 Backend:Spring Boot, Spring Security (JWT), Spring Data JPA, Hibernate Validator  
 Database:MySQL (hosted on [Aiven](https://aiven.io))  
 Deployment:Frontend on [Vercel](https://vercel.com), Backend on [Render](https://render.com), Database on Aiven MySQL  
 
 ✨ Features
+
 📊 Dashboard – Visualize lead metrics and trends  
 ➕ Add Lead – Create new leads with validation  
 📋 All Leads – List, search, filter, and paginate leads  
@@ -21,16 +23,27 @@ Deployment:Frontend on [Vercel](https://vercel.com), Backend on [Render](https:/
 📂 Project Structure
 
 lead-management-system/
+
 │
+
 ├── frontend/        # React + Vite (Vercel deployment)
+
 │   ├── src/
+
 │   └── package.json
+
 │
+
 ├── backend/         # Spring Boot (Render deployment)
+
 │   ├── src/main/java/com/dl/
+
 │   ├── src/main/resources/
+
 │   └── pom.xml
+
 │
+
 └── README.md        # Documentation
 
 🔧 Prerequisites
@@ -44,10 +57,15 @@ lead-management-system/
 2. Update database credentials in `src/main/resources/application.properties`:
 
 properties
+
 spring.datasource.url=jdbc:mysql://<AIVEN_HOST>:<PORT>/<DB_NAME>
+
 spring.datasource.username=<USERNAME>
+
 spring.datasource.password=<PASSWORD>
+
 spring.jpa.hibernate.ddl-auto=update
+
 spring.jpa.show-sql=true
 
 3. Run the backend:
@@ -95,20 +113,29 @@ Database:MySQL hosted on [Aiven](https://aiven.io)
 | GET    | `/api/leads/all`  | Get all leads   | Admin/User |
 
 📸 Screenshots
+
+
 Login Page
-<img width="1894" height="893" alt="Screenshot 2025-09-19 100115" src="https://github.com/user-attachments/assets/ad4332b4-d322-46ff-874b-f1c4e56a998b" />
+
+<img width="1919" height="900" alt="Screenshot 2025-09-19 095939" src="https://github.com/user-attachments/assets/f2109e39-5468-4c00-b2bc-e980636ec33c" />
+
 
 DashBoard
-<img width="1901" height="906" alt="Screenshot 2025-09-19 100052" src="https://github.com/user-attachments/assets/c825f622-cd14-4e66-ac47-939bdfe9956f" />
+
+<img width="1894" height="903" alt="Screenshot 2025-09-19 100011" src="https://github.com/user-attachments/assets/50c2e15c-97a7-4453-8efe-af045f2ab581" />
+
 
 AllLeads
+
 <img width="1893" height="886" alt="Screenshot 2025-09-19 100030" src="https://github.com/user-attachments/assets/5b32981a-b6ef-4647-90c0-73ef9124490e" />
 
 Create Lead
-<img width="1894" height="903" alt="Screenshot 2025-09-19 100011" src="https://github.com/user-attachments/assets/50c2e15c-97a7-4453-8efe-af045f2ab581" />
+
+<img width="1901" height="906" alt="Screenshot 2025-09-19 100052" src="https://github.com/user-attachments/assets/c825f622-cd14-4e66-ac47-939bdfe9956f" />
 
 Analytics
-<img width="1919" height="900" alt="Screenshot 2025-09-19 095939" src="https://github.com/user-attachments/assets/f2109e39-5468-4c00-b2bc-e980636ec33c" />
+
+<img width="1894" height="893" alt="Screenshot 2025-09-19 100115" src="https://github.com/user-attachments/assets/ad4332b4-d322-46ff-874b-f1c4e56a998b" />
 
 
 🙌 Contribution
